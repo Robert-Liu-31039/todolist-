@@ -55,7 +55,7 @@ ROOT_URLCONF = "todolist.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],  # 註冊 templates 的位置
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

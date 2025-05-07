@@ -20,7 +20,9 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
-    # 設定 url 路徑 與 要使用的 function
+    # 設定 url 路徑 與 要使用的 function， Django 的根目錄預設不用寫
+    # path("", views.hello),
     path("hello/", views.hello),
+    path("lotto/", views.lotto),
     path("admin/", admin.site.urls),
 ]
