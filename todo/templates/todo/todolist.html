@@ -23,7 +23,7 @@
             <!-- Jinja2 的特殊寫法 : 
              url -> 目前的 url, 
              '@path的Name名稱' -> 由註冊的路徑名稱對應到自訂的路徑
-             @id -> 要餵給自訂功能業的參數資料
+             @id -> 要餵給自訂功能頁的參數資料
             -->             
             <a href="{% url 'viewtodoUrlName' i.id  %}">
                 {{i.title}}
