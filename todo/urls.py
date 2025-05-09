@@ -18,9 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import todolist
+from .views import todolist, viewtodo
 
 urlpatterns = [
     # 設定 url 路徑 與 要使用的 function， Django 的根目錄預設不用寫
     path("", todolist),
+    path("view/<int:id>/", viewtodo, name="viewtodoUrlName"),
 ]

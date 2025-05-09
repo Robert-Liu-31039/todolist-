@@ -4,7 +4,7 @@ import random
 
 
 # Create your views here.
-def hello(request):
+def hello(request):  # Django 規定 : 一定要帶 request 這個參數
     result = {"message": "測試", "data": 123, "label": "文字"}
 
     # Django 的規範 :
@@ -15,7 +15,7 @@ def hello(request):
     return JsonResponse(result)
 
 
-def lotto(request):
+def lotto(request):  # Django 規定 : 一定要帶 request 這個參數
     # 1~49 不重複 6 個數字跟排序
     numbers = sorted(random.sample(range(1, 50), 6))
     numbers = ",".join((str(i) for i in numbers))

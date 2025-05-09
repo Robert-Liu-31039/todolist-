@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViewTodo</title>
+</head>
+<body>
+    <h1>事項</h1>
+
+    {% if not todo %}
+    <h3 style="color: darkred;">編號錯誤，請重新輸入</h3>
+    {% else %}
+    {{todo}}
+    {% endif %}
+</body>
+</html>
