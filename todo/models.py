@@ -11,7 +11,8 @@ class Todo(models.Model):
     # 時間型別中，auto_now_add=True 代表自動帶入現在的時間
     created = models.DateTimeField(auto_now_add=True)
 
-    # 時間型別中，null=True 代表時間型別為空物件
+    # 物件型別要同時兩組 null=True, blank=True
+    # 才可以代表 該 column 可以為 null
     data_completed = models.DateTimeField(null=True, blank=True)
 
     # ※ 字串會用空字串 -> blank=True

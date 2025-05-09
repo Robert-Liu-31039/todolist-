@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList</title>
+    <style>
+        body{
+            text-align: center;
+        }
+
+        .card{
+            background-color: burlywood;
+
+        }
+    </style>
+</head>
+<body>
+    <h1>代辦事項</h1>
+    {% for i in todos %}
+        <h2>{{i.title}}</h2>
+        <small>{{i.created}}</small>
+        {% if i.text %}
+        <li>{{i.text}}</li> 
+        {% endif %}
+        {% if i.important %}
+        <p style="color: darkred;">重要</p>
+        {% endif %}
+        <hr>
+    {% endfor %}
+</body>
+</html>
