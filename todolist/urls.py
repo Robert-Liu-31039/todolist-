@@ -26,5 +26,6 @@ urlpatterns = [
     # path("hello/", views.hello),
     path("lotto/", views.lotto),
     path("todolist/", include("todo.urls")),
+    path("user/", include("user.urls")),
     path("admin/", admin.site.urls),
 ]

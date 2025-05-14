@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "app",  # 註冊功能頁面
     "todo",  # 註冊功能頁面
+    "user",  # 註冊功能頁面
 ]
 
 MIDDLEWARE = [

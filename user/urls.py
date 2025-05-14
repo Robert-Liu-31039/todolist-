@@ -18,10 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import todolist, viewtodo
+from .views import user_register, user_login
 
 urlpatterns = [
     # 設定 url 路徑 與 要使用的 function， Django 的根目錄預設不用寫
-    path("", todolist, name="todolist"),
-    path("view/<int:id>/", viewtodo, name="viewtodoUrlName"),
+    path("register/", user_register, name="register"),
+    path("login/", user_login, name="login"),
 ]
