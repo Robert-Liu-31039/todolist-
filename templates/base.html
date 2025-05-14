@@ -4,28 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
         {% block title %}
 
         {% endblock %}
     </title>
-    <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
+    <style>        
+        body{
+            text-align: center;
+            background-color: antiquewhite;
+        }
+
+        form{
+            width: 800px;
+            margin: 0 auto;
+            background-color: aquamarine;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        input{
+            text-align: center;
+        }
+
+        li{
+            list-style: none;
+        }
+        
+        #nav-bar{
+            background-color: rgb(139, 139, 199);
+            padding: 12px;
+            text-align: left;
+        }
+        
+    </style>
     {% block style %}
 
     {% endblock %}
 </head>
 <body>
-    {% if user.is_authenticated %}
-    Login:{{user.username}}
-    <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'register' %}">Register</a>
-    {% endif %}
+    <div id="nav-bar">
+        {% if user.is_authenticated %}
+        Login:{{user.username}}
+        <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+        {% endif %}
 
-    <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
-    {% block content %}
+        <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
+    </div>
 </body>
 </html>

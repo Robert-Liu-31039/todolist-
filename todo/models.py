@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -19,6 +20,8 @@ class Todo(models.Model):
     # ※ 物件會用空物件 -> null=True
 
     important = models.BooleanField(default=False)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     # __str__ 是 models.Model 內的既有函式，
     # 功能只是在 Django 的 管理後端，
