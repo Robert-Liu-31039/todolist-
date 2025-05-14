@@ -22,10 +22,10 @@ from app import views
 
 urlpatterns = [
     # 設定 url 路徑 與 要使用的 function， Django 的根目錄預設不用寫
-    path("", views.hello),
-    # path("hello/", views.hello),
+    # path("", views.hello),
+    path("hello/", views.hello),
     path("lotto/", views.lotto),
-    path("todolist/", include("todo.urls")),
+    path("", include("todo.urls")),
     path("user/", include("user.urls")),
     path("admin/", admin.site.urls),
 ]

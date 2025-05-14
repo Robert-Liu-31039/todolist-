@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ViewTodo</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+    ViewTodo
+{% endblock %}
+{% block content %}    
+
     <h1>事項</h1>
 
     {% if not todo %}
@@ -13,5 +11,4 @@
     {% else %}
     {{todo}}
     {% endif %}
-</body>
-</html>
+{% endblock %}

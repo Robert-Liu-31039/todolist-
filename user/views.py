@@ -66,3 +66,8 @@ def user_login(request):
     return render(
         request, "user/login.html", {"username": username, "message": message}
     )
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("todolist")
