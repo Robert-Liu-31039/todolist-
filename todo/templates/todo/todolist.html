@@ -15,6 +15,9 @@ TodoList
     {{user.email}}
 
     <h1>代辦事項</h1>
+    {% if not todos %}
+        <h2 style="color: darkred;">請先登入或註冊，<a href="{% url 'login' %}">登入</a></h2>
+    {% else %}
     {% for i in todos %}
         <h1>{{i.id}}</h1>
         <h2>
@@ -36,4 +39,6 @@ TodoList
         {% endif %}
         <hr>
     {% endfor %}
+    {% endif %}
+    
 {% endblock %}
