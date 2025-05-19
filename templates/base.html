@@ -50,11 +50,12 @@
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Register</a>
         {% endif %}
-
-        <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
-        {% block content %}
-
-        {% endblock %}
     </div>
+    
+    <!-- 使用 Jinja2 來標記出哪裡的區塊會被其他頁面所繼承 -->
+    {% block content %}
+
+    {% endblock %}
+    
 </body>
 </html>
