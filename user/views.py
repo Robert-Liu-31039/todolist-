@@ -36,6 +36,8 @@ def user_register(request):
                 )
                 userInfo.save()
                 message = "註冊成功!"
+
+                return redirect("login")
     else:
         # UserCreationForm() 是 Django 內建的函數 用於產生 註冊使用者 的前端 html 資料
         form = UserCreationForm()
