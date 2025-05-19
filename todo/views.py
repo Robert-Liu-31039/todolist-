@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Todo
 
@@ -22,7 +22,10 @@ def todolist(request):  # Django 規定 : 一定要帶 request 這個參數
 
     # 如果有登入帳號的話，僅顯示登入者的 todo 內容
     if user.is_authenticated:
-        todos = Todo.objects.filter(user=request.user)
+        # .order_by("-@欄位名稱") -> 代表降冪排序
+        # .order_by("@欄位名稱") -> 代表升冪排序
+        todos = Todo.objects.filter(user=request.user).order_by("-created")
+        # todos = Todo.objects.filter(user=request.user).order_by("created")
 
     result = {"todos": todos, "user": user}
 
@@ -52,6 +55,7 @@ def createtodo(request):
         # 真的存於 db 中
         todo.save()
 
+        return redirect("todolist")
     else:
         form = TodoForm
 
