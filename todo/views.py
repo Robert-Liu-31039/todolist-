@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 from .models import Todo
 
+from .forms import TodoForm
+
 
 # Create your views here.
 def todolist(request):  # Django 規定 : 一定要帶 request 這個參數
@@ -36,3 +38,21 @@ def viewtodo(request, id):  # Django 規定 : 一定要帶 request 這個參數
         print(e)
 
     return render(request, "todo/viewtodo.html", {"todo": todo})
+
+
+def createtodo(request):
+    if request.method == "POST":
+        # 將 原本 form 的內容記憶起來
+        form = TodoForm(request.POST)
+
+        # 暫存，不做 commit，因為還有資料要做處理
+        todo = form.save(commit=False)
+        todo.user = request.user
+
+        # 真的存於 db 中
+        todo.save()
+
+    else:
+        form = TodoForm
+
+    return render(request, "todo/createtodo.html", {"form": form})

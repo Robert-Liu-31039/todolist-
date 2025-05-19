@@ -21,7 +21,7 @@ class Todo(models.Model):
 
     important = models.BooleanField(default=False)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # __str__ 是 models.Model 內的既有函式，
     # 功能只是在 Django 的 管理後端，
