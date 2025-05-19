@@ -14,11 +14,16 @@ TodoList
     {{user.username}}
     {{user.email}}
 
-    <h1>代辦事項</h1>
+    <h1>目前代辦事項</h1>
     {% if not todos %}
-        <h2 style="color: darkred;">請先登入或註冊，<a href="{% url 'login' %}">登入</a></h2>
+        <h2 style="color: darkred;">
+            請先登入或註冊，<br>
+            <a href="{% url 'login' %}">登入</a>&nbsp;
+            <a href="{% url 'register' %}">註冊</a>
+        </h2>
     {% else %}
     {% for i in todos %}
+        <small>{{i.created}}</small>
         <h1>{{i.id}}</h1>
         <h2>
             <!-- Jinja2 的特殊寫法 : 
@@ -29,8 +34,7 @@ TodoList
             <a href="{% url 'viewtodoUrlName' i.id  %}">
                 {{i.title}}
             </a>
-        </h2>
-        <small>{{i.created}}</small>
+        </h2>        
         {% if i.text %}
         <li>{{i.text}}</li> 
         {% endif %}
