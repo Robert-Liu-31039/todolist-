@@ -32,15 +32,23 @@ TodoList
              @id -> 要餵給自訂功能頁的參數資料
             -->             
             <a href="{% url 'viewtodoUrlName' i.id  %}">
+                {% if i.important %}
+                <span style="color: darkred;">(重要)</span>
+                {% endif %}
                 {{i.title}}
             </a>
         </h2>        
         {% if i.text %}
-        <li>{{i.text}}</li> 
+        <!-- | linebreaks -> 使用 Jinja2 的語法，讓前端呈現換行 -->
+        <li>{{i.text | linebreaks}}</li> 
+        {% endif %}        
+        {% if i.date_completed %}
+        <small style="color: green;">完成時間:{{i.date_completed}}</small>
         {% endif %}
-        {% if i.important %}
-        <p style="color: darkred;">重要</p>
-        {% endif %}
+        <p>
+            <a class="button" href="{% url 'viewtodoUrlName' i.id  %}">更新</a>
+            <a class="button" style="background-color: red;" href="{% url 'deletetodoUrlName' i.id  %}" onclick="return confirm('確認是否刪除?!')">刪除</a>            
+        </p>
         <hr>
     {% endfor %}
     {% endif %}

@@ -4,6 +4,8 @@ from .models import Todo
 
 from .forms import TodoForm
 
+from datetime import datetime
+
 
 # Create your views here.
 def todolist(request):  # Django 規定 : 一定要帶 request 這個參數
@@ -34,23 +36,52 @@ def todolist(request):  # Django 規定 : 一定要帶 request 這個參數
 
 def viewtodo(request, id):  # Django 規定 : 一定要帶 request 這個參數
     todo = None
+    form = None
+    message = None
 
     try:
         todo = Todo.objects.get(id=id)
+
+        if request.method == "GET":
+            # instance -> 實際案例，代表要放在 TodoForm 的資料實例
+            form = TodoForm(instance=todo)
+        else:
+            # 將 原本 form 的內容記憶起來，並取代 原本instance 的資料，用於執行 Update
+            form = TodoForm(request.POST, instance=todo)
+
+            # 暫存，不做 commit，因為還有資料要做處理
+            action = form.save(commit=False)
+            if action.completed == True:
+                action.date_completed = datetime.now()
+            else:
+                action.date_completed = None
+
+            # 真的存於 db 中
+            action.save()
+
+            message = "修改成功"
+
     except Exception as e:
         print(e)
 
-    return render(request, "todo/viewtodo.html", {"todo": todo})
+    return render(
+        request, "todo/viewtodo.html", {"todo": todo, "form": form, "message": message}
+    )
 
 
-def createtodo(request):
+def createtodo(request):  # Django 規定 : 一定要帶 request 這個參數
     if request.method == "POST":
-        # 將 原本 form 的內容記憶起來
+        # 將 原本 form 的內容記憶起來，用於執行 Insert
         form = TodoForm(request.POST)
 
         # 暫存，不做 commit，因為還有資料要做處理
         todo = form.save(commit=False)
         todo.user = request.user
+
+        if todo.completed == True:
+            todo.date_completed = datetime.now()
+        else:
+            todo.date_completed = None
 
         # 真的存於 db 中
         todo.save()
@@ -60,3 +91,10 @@ def createtodo(request):
         form = TodoForm
 
     return render(request, "todo/createtodo.html", {"form": form})
+
+
+def deletetodo(request, id):  # Django 規定 : 一定要帶 request 這個參數
+    todo = Todo.objects.get(id=id)
+    todo.delete()
+
+    return redirect("todolist")

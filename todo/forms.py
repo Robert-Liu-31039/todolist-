@@ -12,4 +12,4 @@ class TodoForm(ModelForm):
         ##fields = "__all__"
 
         # 指定 要的欄位有哪些
-        fields = ["title", "text", "important"]
+        fields = ["title", "text", "important", "completed"]

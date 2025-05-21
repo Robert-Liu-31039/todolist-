@@ -4,11 +4,19 @@
 {% endblock %}
 {% block content %}    
 
-    <h1>事項</h1>
+    <h1>單一事項</h1>
 
     {% if not todo %}
     <h3 style="color: darkred;">編號錯誤，請重新輸入</h3>
     {% else %}
     {{todo}}
     {% endif %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">更新</button>
+    </form>
+    <a href="{% url 'todolist' %}">回首頁</a>
+    {{message}}
 {% endblock %}

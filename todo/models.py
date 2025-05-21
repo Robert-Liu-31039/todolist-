@@ -14,7 +14,7 @@ class Todo(models.Model):
 
     # 物件型別要同時兩組 null=True, blank=True
     # 才可以代表 該 column 可以為 null
-    data_completed = models.DateTimeField(null=True, blank=True)
+    date_completed = models.DateTimeField(null=True, blank=True)
 
     # ※ 字串會用空字串 -> blank=True
     # ※ 物件會用空物件 -> null=True
@@ -22,6 +22,8 @@ class Todo(models.Model):
     important = models.BooleanField(default=False)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    completed = models.BooleanField(default=False)
 
     # __str__ 是 models.Model 內的既有函式，
     # 功能只是在 Django 的 管理後端，
