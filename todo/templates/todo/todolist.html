@@ -15,42 +15,58 @@ TodoList
     {{user.email}}
 
     <h1>目前代辦事項</h1>
-    {% if not todos %}
+    <hr>
+    {% if not user.is_authenticated %}
         <h2 style="color: darkred;">
             請先登入或註冊，<br>
             <a href="{% url 'login' %}">登入</a>&nbsp;
             <a href="{% url 'register' %}">註冊</a>
         </h2>
     {% else %}
-    {% for i in todos %}
-        <small>{{i.created}}</small>
-        <h1>{{i.id}}</h1>
-        <h2>
-            <!-- Jinja2 的特殊寫法 : 
-             url -> 目前的 url, 
-             '@path的Name名稱' -> 由註冊的路徑名稱對應到自訂的路徑
-             @id -> 要餵給自訂功能頁的參數資料
-            -->             
-            <a href="{% url 'viewtodoUrlName' i.id  %}">
-                {% if i.important %}
-                <span style="color: darkred;">(重要)</span>
-                {% endif %}
-                {{i.title}}
-            </a>
-        </h2>        
-        {% if i.text %}
-        <!-- | linebreaks -> 使用 Jinja2 的語法，讓前端呈現換行 -->
-        <li>{{i.text | linebreaks}}</li> 
-        {% endif %}        
-        {% if i.date_completed %}
-        <small style="color: green;">完成時間:{{i.date_completed}}</small>
+        <div id="filter-button">
+            <a href="{% url 'todolist' %}" class="button">全部</a>
+            <a href="{% url 'todolist' %}?filter=important" class="button">重要</a>
+            <a href="{% url 'todolist' %}?filter=pending" class="button">未完成</a>
+            <a href="{% url 'todolist' %}?filter=completed" class="button">已完成</a>
+        </div>
+        <br>
+
+        {% if not todos %}
+            <h2>
+                目前無代辦事項，請先
+                <a href="{% url 'createtodo' %}">新增</a> 
+            </h2>
         {% endif %}
-        <p>
-            <a class="button" href="{% url 'viewtodoUrlName' i.id  %}">更新</a>
-            <a class="button" style="background-color: red;" href="{% url 'deletetodoUrlName' i.id  %}" onclick="return confirm('確認是否刪除?!')">刪除</a>            
-        </p>
-        <hr>
-    {% endfor %}
+
+        {% for i in todos %}
+            <small>{{i.created}}</small>
+            <h1>{{i.id}}</h1>
+            <h2>
+                <!-- Jinja2 的特殊寫法 : 
+                url -> 目前的 url, 
+                '@path的Name名稱' -> 由註冊的路徑名稱對應到自訂的路徑
+                @id -> 要餵給自訂功能頁的參數資料
+                -->             
+                <a href="{% url 'viewtodoUrlName' i.id  %}">
+                    {% if i.important %}
+                    <span style="color: darkred;">(重要)</span>
+                    {% endif %}
+                    {{i.title}}
+                </a>
+            </h2>        
+            {% if i.text %}
+            <!-- | linebreaks -> 使用 Jinja2 的語法，讓前端呈現換行 -->
+            <li>{{i.text | linebreaks}}</li> 
+            {% endif %}        
+            {% if i.date_completed %}
+            <small style="color: green;">完成時間:{{i.date_completed}}</small>
+            {% endif %}
+            <p>
+                <a class="button" href="{% url 'viewtodoUrlName' i.id  %}">更新</a>
+                <a class="button" style="background-color: red;" href="{% url 'deletetodoUrlName' i.id  %}" onclick="return confirm('確認是否刪除?!')">刪除</a>            
+            </p>
+            <hr>
+        {% endfor %}
     {% endif %}
     
 {% endblock %}

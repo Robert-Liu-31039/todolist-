@@ -24,10 +24,21 @@ def todolist(request):  # Django 規定 : 一定要帶 request 這個參數
 
     # 如果有登入帳號的話，僅顯示登入者的 todo 內容
     if user.is_authenticated:
+        filter_params = request.GET.get("filter")
+
+        print(filter_params)
+
         # .order_by("-@欄位名稱") -> 代表降冪排序
         # .order_by("@欄位名稱") -> 代表升冪排序
         todos = Todo.objects.filter(user=request.user).order_by("-created")
         # todos = Todo.objects.filter(user=request.user).order_by("created")
+
+        if filter_params == "important":
+            todos = todos.filter(important=True).order_by("-created")
+        elif filter_params == "pending":
+            todos = todos.filter(completed=False).order_by("-created")
+        elif filter_params == "completed":
+            todos = todos.filter(completed=True).order_by("-created")
 
     result = {"todos": todos, "user": user}
 
