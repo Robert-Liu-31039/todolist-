@@ -1,72 +1,222 @@
 {% extends "base.html" %}
-{% block title %}
-TodoList
-{% endblock %}
 {% block style %}
-    <style>
-        body{
-            text-align: center;
-            background-color: burlywood;
-        }
-    </style>
+<style>
+    .todo-card {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .todo-footer {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .completed-time {
+        color: #27ae60;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .todo-card h2 {
+        font-size: 20px;
+        margin: 8px 0;
+        font-weight: bold;
+    }
+
+    .todo-card p,
+    .todo-card li {
+        margin: 0;
+        padding: 0;
+    }
+
+    .todo-meta {
+        font-size: 12px;
+        color: #888;
+
+    }
+
+    .important-badge {
+        background-color: #9b59b6;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-right: 6px;
+    }
+
+    .completed-time {
+        color: #27ae60;
+        font-size: 12px;
+    }
+
+    .todo-buttons {
+        margin-top: 12px;
+    }
+
+    .todo-buttons .button {
+        margin-right: 8px;
+    }
+
+    .filter-buttons {
+        text-align: center;
+        margin: 16px 0;
+    }
+
+    .filter-btn {
+        display: inline-block;
+        padding: 8px 14px;
+        margin: 0 4px;
+        border-radius: 6px;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+
+    .filter-btn:hover {
+        background-color: #d0d7df;
+    }
+
+    .filter-btn.active {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .todo-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .todo-text {
+        background-color: #f7f9fc;
+        padding: 6px 16px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 12px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+
+    .todo-card {
+        position: relative;
+        padding-top: 48px;
+        /* 預留空間讓右上按鈕不擋住內容 */
+    }
+
+    .action-buttons {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-buttons .button {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+</style>
 {% endblock %}
+{% if request.user.is_authenticated %}
+{% block function %}
+<div class="filter-buttons">
+    <a href="{% url 'todolist' %}" class="filter-btn {% if not request.GET.filter %}active{% endif %}">📘 全部</a>
+    <a href="{% url 'todolist' %}?filter=important"
+        class="filter-btn {% if request.GET.filter == 'important' %}active{% endif %}">⭐ 重要</a>
+    <a href="{% url 'todolist' %}?filter=pending"
+        class="filter-btn {% if request.GET.filter == 'pending' %}active{% endif %}">⏳ 未完成</a>
+    <a href="{% url 'todolist' %}?filter=completed"
+        class="filter-btn {% if request.GET.filter == 'completed' %}active{% endif %}">✅ 已完成</a>
+</div>
+{% endblock %}
+{% endif %}
+
 {% block content %}
-    {{user.username}}
-    {{user.email}}
+<h1 class="title">📋 目前代辦事項列表 <button class="button" onclick="sortTodosAsc()">排序</button></h1>
+<hr>
+{% if not todos %}
+{% if not request.user.is_authenticated %}
+<h2 style="color:rgb(206, 105, 105)">每天努力做完一件事情，讓世界更美好!</h2>
+<p>
+    <a class="button" href="{% url 'login' %}">登入</a>
+    <a class="button" href="{% url 'register' %}">註冊</a>
+</p>
+{% else %}
+<h2 style="color:gray">目前沒有待辦事項</h2>
+{% endif %}
+{% endif %}
 
-    <h1>目前代辦事項</h1>
-    <hr>
-    {% if not user.is_authenticated %}
-        <h2 style="color: darkred;">
-            請先登入或註冊，<br>
-            <a href="{% url 'login' %}">登入</a>&nbsp;
-            <a href="{% url 'register' %}">註冊</a>
-        </h2>
-    {% else %}
-        <div id="filter-button">
-            <a href="{% url 'todolist' %}" class="button">全部</a>
-            <a href="{% url 'todolist' %}?filter=important" class="button">重要</a>
-            <a href="{% url 'todolist' %}?filter=pending" class="button">未完成</a>
-            <a href="{% url 'todolist' %}?filter=completed" class="button">已完成</a>
+<div class="todo-container">
+    {% for todo in todos %}
+    <div class="todo-card" data-created="{{ todo.created|date:'Y-m-d H:i:s' }}">
+        <div class="action-buttons">
+            <a class="button" href="{% url 'viewtodoUrlName' todo.id %}">更新</a>
+            <a class="button button-danger" href="{% url 'deletetodoUrlName' todo.id %}"
+                onclick="return confirm('確認是否刪除?!')">刪除</a>
         </div>
-        <br>
-
-        {% if not todos %}
-            <h2>
-                目前無代辦事項，請先
-                <a href="{% url 'createtodo' %}">新增</a> 
-            </h2>
-        {% endif %}
-
-        {% for i in todos %}
-            <small>{{i.created}}</small>
-            <h1>{{i.id}}</h1>
-            <h2>
-                <!-- Jinja2 的特殊寫法 : 
-                url -> 目前的 url, 
-                '@path的Name名稱' -> 由註冊的路徑名稱對應到自訂的路徑
-                @id -> 要餵給自訂功能頁的參數資料
-                -->             
-                <a href="{% url 'viewtodoUrlName' i.id  %}">
-                    {% if i.important %}
-                    <span style="color: darkred;">(重要)</span>
-                    {% endif %}
-                    {{i.title}}
-                </a>
-            </h2>        
-            {% if i.text %}
-            <!-- | linebreaks -> 使用 Jinja2 的語法，讓前端呈現換行 -->
-            <li>{{i.text | linebreaks}}</li> 
-            {% endif %}        
-            {% if i.date_completed %}
-            <small style="color: green;">完成時間:{{i.date_completed}}</small>
+        <div class="todo-meta">建立時間：{{ todo.created }}</div>
+        <div class="todo-footer">
+            {% if todo.date_completed %}
+            <div class="completed-time">完成時間：{{ todo.date_completed }}</div>
             {% endif %}
-            <p>
-                <a class="button" href="{% url 'viewtodoUrlName' i.id  %}">更新</a>
-                <a class="button" style="background-color: red;" href="{% url 'deletetodoUrlName' i.id  %}" onclick="return confirm('確認是否刪除?!')">刪除</a>            
-            </p>
-            <hr>
-        {% endfor %}
-    {% endif %}
-    
+
+        </div>
+        <h2 style="text-align: center;"> {% if todo.important %}
+            <span class="important-badge">重要</span><br>
+            {% endif %} {{ todo.title }}
+        </h2>
+
+
+        <div class="todo-text">
+            {{ todo.text|linebreaks }}
+        </div>
+
+
+
+    </div>
+    {% endfor %}
+</div>
+<script>
+    let sortByAsc = false;
+
+    function sortTodosAsc() {
+        const cards = Array.from(document.querySelectorAll('.todo-card'));
+        sortByAsc = !sortByAsc;
+        console.log(sortByAsc);
+
+        cards.sort((a, b) => {
+            const timeA = new Date(a.dataset.created);
+            const timeB = new Date(b.dataset.created);
+            if (sortByAsc) {
+                return timeA - timeB;
+            }
+
+            return -(timeA - timeB);
+
+        });
+
+        const container = cards[0].parentElement;
+        cards.forEach(card => container.appendChild(card));
+    }
+
+
+</script>
 {% endblock %}

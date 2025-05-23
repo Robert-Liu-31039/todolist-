@@ -1,25 +1,85 @@
 {% extends "base.html" %}
-{% block title %}
-    Login
+
+{% block title %}登入頁面{% endblock %}
+
+{% block style %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 24px;
+        background-color: #f4f9ff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-container h1 {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+        text-align: left;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .message {
+        color: red;
+        margin-top: 12px;
+        text-align: center;
+    }
+</style>
 {% endblock %}
+
 {% block content %}
-    <h1>登入</h1>
-
-    <form action="" method="POST">
+<div class="login-container">
+    <h1>🔐 登入</h1>
+    <form method="POST">
         {% csrf_token %}
+        <div class="form-group">
+            <label for="username">名稱：</label>
+            <input type="text" id="username" name="username" required value="{{ username }}">
+        </div>
 
-        <p>
-            <label for="username">名稱:</label>
-            <input required type="text" name="username" id="username" value="{{username}}">
-        </p>
-        <p>
-            <label for="password">密碼:</label>
-            <input required type="password" name="password" id="password">
-        </p>
+        <div class="form-group">
+            <label for="password">密碼：</label>
+            <input type="password" id="password" name="password" required>
+        </div>
 
-        <button type="submit">登入</button>
+        <button class="submit-btn" type="submit">登入</button>
     </form>
-
-    {{message}}
-
+    {% if message %}
+    <div class="message">{{ message }}</div>
+    {% endif %}
+</div>
 {% endblock %}
