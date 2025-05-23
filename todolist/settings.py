@@ -88,17 +88,28 @@ WSGI_APPLICATION = "todolist.wsgi.application"
 # }
 
 # Database 改為使用 mysql
+# DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.mysql",
+#        "NAME": "todolist",
+#        "USER": "root",
+#        "PASSWORD": "12345678",
+#        "HOST": "127.0.0.1",
+#        "PORT": 3306,
+#    }
+# }
+
+# Database 改為使用 雲端的mysql
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "todolist",
-        "USER": "root",
-        "PASSWORD": "12345678",
-        "HOST": "127.0.0.1",
-        "PORT": 3306,
+        "NAME": "defaultdb",
+        "USER": "avnadmin",
+        "PASSWORD": "AVNS_uodZZaxbBEDsRc22ttA",
+        "HOST": "mysql-31762e70-todolist-robertliu.l.aivencloud.com",
+        "PORT": 11418,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
