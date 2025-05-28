@@ -5,7 +5,8 @@ gunicorn==23.0.0
 packaging==25.0
 PyMySQL==1.1.1
 pytz==2025.2
-setuptools==80.8.0
+setuptools==80.9.0
 sqlparse==0.5.3
 tzdata==2025.2
+whitenoise==6.9.0
 zope.interface==7.2
