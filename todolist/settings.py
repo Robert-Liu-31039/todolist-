@@ -14,6 +14,9 @@ from pathlib import Path
 
 import pymysql
 
+import os
+from dotenv import load_dotenv
+
 pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -100,15 +103,17 @@ WSGI_APPLICATION = "todolist.wsgi.application"
 #    }
 # }
 
+load_dotenv(BASE_DIR / ".env")
+
 # Database 改為使用 雲端的mysql
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "defaultdb",
-        "USER": "avnadmin",
-        "PASSWORD": "AVNS_uodZZaxbBEDsRc22ttA",
-        "HOST": "mysql-31762e70-todolist-robertliu.l.aivencloud.com",
-        "PORT": 11418,
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
     }
 }
 
