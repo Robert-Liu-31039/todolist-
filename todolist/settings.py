@@ -22,6 +22,7 @@ pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -33,7 +34,6 @@ SECRET_KEY = "django-insecure-bhg6(dmi921k=hvthj-dju@@br+&s(md=#fg$f4=5#4ulyhn-#
 DEBUG = False
 
 ALLOWED_HOSTS = ["todolist-oiml.onrender.com"]
-
 
 # Application definition
 
@@ -102,8 +102,6 @@ WSGI_APPLICATION = "todolist.wsgi.application"
 #        "PORT": 3306,
 #    }
 # }
-
-load_dotenv(BASE_DIR / ".env")
 
 # Database 改為使用 雲端的mysql
 DATABASES = {
