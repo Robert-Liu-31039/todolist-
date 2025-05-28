@@ -1,4 +1,4 @@
 db.sqlit3
 __pycache__/
 .venv/
-staticfiles/
+#staticfiles/
